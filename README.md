@@ -1,78 +1,375 @@
-This is the Official repository of **Spring Boot Microservices Professional eCommerce Masterclass** on Udemy
+# 🛒 E-Commerce Microservices Platform
 
-# The Ultimate Java and Spring Boot Mastery
+A comprehensive, production-ready e-commerce platform built with Spring Boot microservices architecture, featuring advanced patterns like API Gateway, Service Discovery, Configuration Management, Circuit Breakers, and Event-Driven Architecture.
 
-Welcome to your one-stop-shop for mastering Java and Spring Boot! This repository offers a comprehensive learning experience with high-quality resources and community support. Dive into over 23+ hours of premium content, with everything you need to excel at Java and Spring Boot development.
+## 🏗️ Architecture Overview
 
-## 🎓 Learning Roadmap
+This project demonstrates a complete microservices ecosystem with the following services:
 
-Most of the courses below are available in **Udemy For Business**, so if you have subscription - you can get FREE access.
-Here’s a structured path to enhance your skills with detailed courses available:
+### Core Business Services
+- **User Service** - User management and authentication
+- **Product Service** - Product catalog and inventory management  
+- **Order Service** - Order processing and management
+- **Notification Service** - Event-driven notifications
 
-1. **[Spring Boot Full Stack By Building Complex Projects Step by Step](https://link.embarkx.com/spring-boot) (80+ Hours of Content)**
-2. **[Master Spring Boot Microservices](https://link.embarkx.com/microservices) (50+ Hours of Content)**
-3. **[Learn Java with 60+ Hours of Content](http://link.embarkx.com/java) (60+ Hours of Content)**
-4. **[Master Spring Security with React JS + OAuth2](https://link.embarkx.com/spring-security) (34+ Hours of Content)**
-5. **[Master IntelliJ IDEA](http://link.embarkx.com/intellij) (3+ Hours of Content)**
+### Infrastructure Services
+- **API Gateway** - Single entry point with routing, security, and rate limiting
+- **Service Discovery (Eureka)** - Service registration and discovery
+- **Configuration Server** - Centralized configuration management
+- **Monitoring & Observability** - Distributed tracing, metrics, and logging
 
+## 🛠️ Technology Stack
 
-## 🌟 With All Our Courses You Gain Access To
+### Backend Technologies
+- **Java 21** - Latest LTS version with modern features
+- **Spring Boot 3.4+** - Latest Spring Boot with native compilation support
+- **Spring Cloud 2024.0** - Microservices patterns and tools
+- **Spring Security + OAuth2** - Authentication and authorization
+- **Spring Data JPA/MongoDB** - Data persistence layers
 
-- 📝 **Notes:** Detailed and downloadable notes to accompany each lesson.
-- 💻 **Source Code:** Full access to the source code used in the tutorials.
-- 🤔 **Doubt Solving:** Responsive instructor and community support.
-- 🎥 **High-Quality HD Videos:** Easy to understand, high-definition video tutorials.
-- 🔄 **Free Lifetime Updates:** Continuous updates to course content at no extra cost.
+### Infrastructure & DevOps
+- **Docker & Docker Compose** - Containerization and orchestration
+- **PostgreSQL** - Relational database for transactional data
+- **MongoDB** - NoSQL database for user profiles
+- **Apache Kafka** - Event streaming and messaging
+- **RabbitMQ** - Message broker for internal communication
 
-## 📚 Why Choose This Mastery Series?
+### Monitoring & Observability
+- **Prometheus** - Metrics collection and monitoring
+- **Grafana** - Visualization and dashboards
+- **Loki** - Log aggregation and analysis
+- **Zipkin** - Distributed tracing
+- **Spring Boot Actuator** - Health checks and metrics
 
-With this series, you're not just learning; you're preparing to dominate the field of Java and Spring Boot development. Our structured learning path ensures that you build your skills progressively, with each course designed to build on the knowledge gained from the previous one.
+### Security & Authentication
+- **Keycloak** - Identity and access management
+- **OAuth2 + PKCE** - Secure authentication flows
+- **JWT Tokens** - Stateless authentication
+- **Spring Security** - Method-level security
 
-### Join Us Now!
+## 🚀 Quick Start
 
-Start your journey today to become a master at Java and Spring Boot. Our community and expert instructors are here to support your learning every step of the way. **Enroll and start building your future, today!**
+### Prerequisites
+- Java 21+ (OpenJDK recommended)
+- Docker & Docker Compose
+- Maven 3.8+
+- Git
 
+### 1. Clone the Repository
+```bash
+git clone <your-repo-url>
+cd ecom-microservices
+```
 
+### 2. Start Infrastructure Services
+```bash
+cd deploy/docker
+docker-compose up -d postgres mongo keycloak kafka zookeeper rabbitmq zipkin
+```
 
+### 3. Build All Services
+```bash
+# Build all microservices
+./mvnw clean package -DskipTests
 
+# Or build individual services
+cd user && ./mvnw clean package -DskipTests
+cd product && ./mvnw clean package -DskipTests
+cd order && ./mvnw clean package -DskipTests
+cd gateway && ./mvnw clean package -DskipTests
+cd eureka && ./mvnw clean package -DskipTests
+cd configserver && ./mvnw clean package -DskipTests
+cd notification && ./mvnw clean package -DskipTests
+```
 
-# Usage Policy for Course Materials
+### 4. Start Core Services (In Order)
+```bash
+# 1. Start Config Server
+cd configserver && ./mvnw spring-boot:run
 
-## Instructor Information
+# 2. Start Eureka Server
+cd eureka && ./mvnw spring-boot:run
 
-**Instructor:** Faisal Memon  
-**Company:** [EmbarkX.com](http://www.embarkx.com)
+# 3. Start Business Services
+cd user && ./mvnw spring-boot:run
+cd product && ./mvnw spring-boot:run
+cd order && ./mvnw spring-boot:run
+cd notification && ./mvnw spring-boot:run
 
-## Policy Overview
+# 4. Start API Gateway
+cd gateway && ./mvnw spring-boot:run
+```
 
-This document outlines the guidelines and restrictions concerning the use of course materials provided by EmbarkX, including but not limited to PDF presentations, code samples, and video tutorials.
+### 5. Docker Deployment (Recommended)
+```bash
+cd deploy/docker
+docker-compose up -d
+```
 
-### 1. Personal Use Only
+## 📱 Service Endpoints
 
-The materials provided in this course are intended for **your personal use only**. They are to be used solely for the purpose of learning and completing this course.
+### API Gateway (Port 8080)
+- **Base URL**: `http://localhost:8080`
+- All microservice APIs are accessible through the gateway
 
-### 2. No Unauthorized Sharing or Distribution
+### Individual Services (Development)
+- **User Service**: `http://localhost:8082`
+- **Product Service**: `http://localhost:8081`
+- **Order Service**: `http://localhost:8083`
+- **Eureka Dashboard**: `http://localhost:8761`
+- **Config Server**: `http://localhost:8888`
 
-You are **not permitted** to share, distribute, or publicly post any course materials on any websites, social media platforms, or other public forums without prior written consent from the instructor.
+### Infrastructure Services
+- **Keycloak Admin**: `http://localhost:8443` (admin/admin)
+- **Zipkin Tracing**: `http://localhost:9411`
+- **Grafana**: `http://localhost:3000` (admin/admin)
+- **Prometheus**: `http://localhost:9090`
+- **RabbitMQ Management**: `http://localhost:15672` (guest/guest)
+- **PgAdmin**: `http://localhost:5050` (pgadmin4@pgadmin.org/admin)
 
-### 3. Intellectual Property
+## 📊 API Documentation
 
-All course materials are protected by copyright laws and are the intellectual property of Faisal Memon and EmbarkX. Unauthorized use, reproduction, or distribution of these materials is **strictly prohibited**.
+### User Service APIs
+```http
+# Get all users
+GET /api/users
 
-### 4. Reporting Violations
+# Get user by ID
+GET /api/users/{id}
 
-If you become aware of any unauthorized sharing or distribution of course materials, please report it immediately to [embarkxofficial@gmail.com](mailto:embarkxofficial@gmail.com).
+# Create user
+POST /api/users
+Content-Type: application/json
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john@example.com",
+  "phone": "1234567890",
+  "address": {
+    "street": "123 Main St",
+    "city": "New York",
+    "state": "NY",
+    "country": "USA",
+    "zipcode": "10001"
+  }
+}
 
-### 5. Legal Action
+# Update user
+PUT /api/users/{id}
+```
 
-We reserve the right to take legal action against individuals or entities found to be violating this usage policy.
+### Product Service APIs
+```http
+# Get all products
+GET /api/products
 
-## Thank You
+# Get product by ID
+GET /api/products/{id}
 
-Thank you for respecting these guidelines and helping us maintain the integrity of our course materials.
+# Create product
+POST /api/products
+Content-Type: application/json
+{
+  "name": "iPhone 16 Pro",
+  "description": "Latest iPhone with amazing features",
+  "price": 1099.99,
+  "stockQuantity": 50,
+  "category": "Electronics",
+  "imageUrl": "https://example.com/image.jpg"
+}
 
-## Contact Information
+# Search products
+GET /api/products/search?keyword=iphone
+```
 
-- **Email:** [embarkxofficial@gmail.com](mailto:embarkxofficial@gmail.com)
-- **Website:** [www.embarkx.com](http://www.embarkx.com)
+### Order Service APIs
+```http
+# Place order
+POST /api/orders
+Headers: X-User-ID: {userId}
 
+# Get user's cart
+GET /api/cart
+Headers: X-User-ID: {userId}
+
+# Add to cart
+POST /api/cart
+Headers: X-User-ID: {userId}
+Content-Type: application/json
+{
+  "productId": "1",
+  "quantity": 2
+}
+```
+
+## 🎯 Key Features Implemented
+
+### Microservices Patterns
+- **API Gateway Pattern** - Single entry point for all client requests
+- **Service Discovery** - Automatic service registration and discovery
+- **Configuration Management** - Centralized configuration with refresh capabilities
+- **Circuit Breaker** - Fault tolerance and resilience
+- **Event-Driven Architecture** - Asynchronous communication via Kafka
+- **Database per Service** - Data isolation and independence
+
+### Security Features
+- **OAuth2 + PKCE Flow** - Secure authentication for web and mobile
+- **JWT Token Authentication** - Stateless security
+- **Role-Based Access Control** - Fine-grained authorization
+- **API Rate Limiting** - Protection against abuse
+- **CORS Configuration** - Cross-origin resource sharing
+
+### Observability & Monitoring
+- **Distributed Tracing** - Request tracking across services
+- **Metrics Collection** - Prometheus integration
+- **Log Aggregation** - Centralized logging with Loki
+- **Health Checks** - Comprehensive service health monitoring
+- **Performance Monitoring** - Application and infrastructure metrics
+
+### Data Management
+- **Polyglot Persistence** - MongoDB for users, PostgreSQL for transactional data
+- **Event Sourcing** - Order events for audit trail
+- **CQRS Pattern** - Command and Query separation
+- **Database Migrations** - Version-controlled schema changes
+
+## 🔄 Event-Driven Architecture
+
+### Kafka Topics
+- **order-events** - Order lifecycle events (created, updated, cancelled)
+- **notification-events** - Notification triggers
+- **user-events** - User registration and profile updates
+
+### Event Flow Examples
+1. **Order Placed** → Kafka → Notification Service → Email/SMS
+2. **User Registered** → Kafka → Welcome Email + Profile Setup
+3. **Product Stock Updated** → Cache Invalidation → Real-time Updates
+
+## 🛡️ Resilience Patterns
+
+### Circuit Breaker Implementation
+- **Resilience4j** integration across all services
+- **Fallback methods** for graceful degradation
+- **Bulkhead pattern** for resource isolation
+- **Configurable thresholds** and recovery times
+
+### Retry & Timeout Strategies
+- **Exponential backoff** for transient failures
+- **Configurable retry policies** per service
+- **Timeout configurations** for external calls
+- **Dead letter queues** for failed messages
+
+## 🐳 Container & Deployment
+
+### Docker Configuration
+- **Multi-stage builds** for optimized images
+- **Distroless base images** for security
+- **Health checks** integrated in containers
+- **Resource limits** and constraints
+
+### Environment Configurations
+- **Development** - Local development with hot reload
+- **Docker** - Containerized deployment
+- **Production** - Kubernetes-ready configurations
+
+## 🧪 Testing Strategy
+
+### Included Test Types
+- **Unit Tests** - JUnit 5 with Mockito
+- **Integration Tests** - Spring Boot Test slices
+- **Contract Tests** - API contract verification
+- **End-to-End Tests** - Postman collections included
+
+### Test Coverage
+- **Service Layer Testing** - Business logic validation
+- **Repository Testing** - Data access layer testing
+- **Controller Testing** - API endpoint testing
+- **Security Testing** - Authentication and authorization
+
+## 📈 Performance Optimizations
+
+### Caching Strategy
+- **Redis caching** for frequently accessed data
+- **Application-level caching** with Spring Cache
+- **Database query optimization** and indexing
+
+### Load Balancing
+- **Client-side load balancing** with Spring Cloud LoadBalancer
+- **Health-check based routing**
+- **Weighted routing** capabilities
+
+## 🎯 Resume Highlights
+
+This project demonstrates expertise in:
+
+### Technical Skills
+- **Microservices Architecture** - Complete implementation with best practices
+- **Spring Boot & Spring Cloud** - Latest versions with modern features
+- **Event-Driven Architecture** - Kafka integration and messaging patterns
+- **Security Implementation** - OAuth2, JWT, and comprehensive security
+- **Container Technologies** - Docker, Docker Compose, Kubernetes-ready
+- **Database Design** - Multi-database architecture and optimization
+- **API Design** - RESTful APIs with proper documentation
+- **Monitoring & Observability** - Complete observability stack
+
+### Architecture Patterns
+- **API Gateway Pattern** - Centralized routing and security
+- **Service Discovery** - Automatic service registration
+- **Configuration Management** - Externalized configuration
+- **Circuit Breaker** - Fault tolerance and resilience
+- **Event Sourcing** - Audit trail and event-driven design
+- **CQRS** - Command Query Responsibility Segregation
+
+### DevOps & Cloud
+- **Containerization** - Docker and container orchestration
+- **Infrastructure as Code** - Docker Compose configurations
+- **Monitoring Stack** - Prometheus, Grafana, Loki, Zipkin
+- **CI/CD Ready** - Build and deployment automation
+- **Cloud-Native** - 12-factor app principles
+
+### Quality Assurance
+- **Comprehensive Testing** - Unit, integration, and E2E tests
+- **Code Quality** - SonarQube integration ready
+- **Security Scanning** - Dependency vulnerability checks
+- **Performance Testing** - Load testing configurations
+
+## 🚀 Getting Started for Development
+
+### IDE Setup
+1. **IntelliJ IDEA** or **VS Code** with Java extensions
+2. **Lombok plugin** for annotation processing
+3. **Docker Desktop** for container management
+
+### Development Workflow
+1. **Start infrastructure** - `docker-compose up -d` (databases, Kafka, etc.)
+2. **Run services individually** - Use IDE or Maven commands
+3. **Test with Postman** - Import provided collections
+4. **Monitor with tools** - Grafana, Zipkin, Eureka dashboard
+
+### Environment Variables
+Create `.env` file in `deploy/docker/`:
+```env
+DB_USER=embarkx
+DB_PASSWORD=embarkx
+MONGO_URI=mongodb://localhost:27017
+RABBITMQ_HOST=localhost
+RABBITMQ_PORT=5672
+RABBITMQ_USERNAME=guest
+RABBITMQ_PASSWORD=guest
+RABBITMQ_VHOST=guest
+ZIPKIN_URL=http://zipkin:9411
+```
+
+## 📞 Contact Information
+
+- **LinkedIn**: [Your LinkedIn Profile]
+- **GitHub**: [Your GitHub Profile]  
+- **Email**: [your.email@example.com]
+- **Portfolio**: [Your Portfolio Website]
+
+---
+
+⭐ **Star this repository** if you find it helpful for your learning or projects!
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

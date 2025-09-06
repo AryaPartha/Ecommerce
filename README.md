@@ -1,5 +1,12 @@
 # 🛒 E-Commerce Microservices Platform
 
+[![Build Status](https://github.com/codergoel/ecommerce-microservices-platform/workflows/🚀%20CI%2FCD%20Pipeline/badge.svg)](https://github.com/codergoel/ecommerce-microservices-platform/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://openjdk.java.net/projects/jdk/21/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4+-green.svg)](https://spring.io/projects/spring-boot)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-Ready-blue.svg)](https://kubernetes.io/)
+
 A comprehensive, production-ready e-commerce platform built with Spring Boot microservices architecture, featuring advanced patterns like API Gateway, Service Discovery, Configuration Management, Circuit Breakers, and Event-Driven Architecture.
 
 ## 🏗️ Architecture Overview
